@@ -1,4 +1,5 @@
 //Program to search in a sorted array;
+//this program is written in java
 import java.util.*;
 public class BinarySearch{
     public static void main(String args[]){
