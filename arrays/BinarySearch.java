@@ -1,6 +1,7 @@
 //Program to search in a sorted array;
 //this program is written in java
 //this is to update the github profile
+//this is to update the github profile
 import java.util.*;
 public class BinarySearch{
     public static void main(String args[]){
