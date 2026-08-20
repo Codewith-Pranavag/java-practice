@@ -5,6 +5,9 @@ public class Main {
   public static boolean isnumvalid(String text){
      return text.matches("\\d+") && iskeyvalid(Integer.valueOf(text)); // Returns true
     }
+    public static boolean isnumOPT(String text){
+     return text.matches("\\d+") ;
+    }
 
     public static boolean isvalid(String s) {
         return s.matches("[a-z ]+");
@@ -189,6 +192,7 @@ public class Main {
 
         // Checking if the input is valid or not
         int opt = -1;
+        String o;
 
         do {
 
@@ -199,8 +203,12 @@ public class Main {
                 + "4. Exit \n"
                 + "Enter the options: \n"
             );
-
-            opt = sc.nextInt();
+            o=sc.next();
+            while(!isnumOPT(o)){
+              System.out.print("renter the options \n");
+              o=sc.next();
+            }
+            opt=Integer.valueOf(o);
 
             if (opt == 1) {
 
