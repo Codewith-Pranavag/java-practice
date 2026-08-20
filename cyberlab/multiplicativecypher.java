@@ -1,6 +1,10 @@
+//multiplicative cipher
 import java.util.*;
 
 public class Main {
+  public static boolean isnumvalid(String text){
+     return text.matches("\\d+") && iskeyvalid(Integer.valueOf(text)); // Returns true
+    }
 
     public static boolean isvalid(String s) {
         return s.matches("[a-z ]+");
@@ -31,11 +35,12 @@ public class Main {
         }
 
         System.out.print("Enter the key \n");
-        int key = sc.nextInt();
-        while(!iskeyvalid(key)){
-          System.out.print("ReEnter the key \n");
-          key=sc.nextInt();
+        String k1 = sc.next();
+        while(!isnumvalid(k1)){
+          System.out.print("Enter the key1 invalid found: \n");
+          k1=sc.next();
         }
+        int key=Integer.valueOf(k1);
 
         StringBuilder sb = new StringBuilder();
 
@@ -93,9 +98,13 @@ public class Main {
             System.out.println("Invalid re enter: \n");
             str = sc.nextLine();
         }
-
-        System.out.print("Enter the key:\n");
-        int key = sc.nextInt();
+        System.out.print("Enter the key: \n");
+        String k1 = sc.next();
+        while(!isnumvalid(k1)){
+          System.out.print("Enter the key invalid found: \n");
+          k1=sc.next();
+        }
+        int key=Integer.valueOf(k1);
 
         StringBuilder sb = new StringBuilder();
 
