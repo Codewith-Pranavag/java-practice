@@ -5,8 +5,20 @@ public class Main {
     public static boolean isvalid(String s) {
         return s.matches("[a-z ]+");
     }
+    public static boolean iskeyvalid(int n){
+         int a = n;
+    int b = 26;
 
+    while (b != 0) {
+        int r = a % b;
+        a = b;
+        b = r;
+    }
+
+    return a == 1;
+    }
     public static void encryption() {
+
         // Take the plain text; should not contain A-Z, 0-9, *, /, etc.
         System.out.print("Enter the plain text: \n");
 
@@ -20,17 +32,24 @@ public class Main {
 
         System.out.print("Enter the key \n");
         int key = sc.nextInt();
+        while(!iskeyvalid(key)){
+          System.out.print("ReEnter the key \n");
+          key=sc.nextInt();
+        }
 
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < s.length(); i++) {
+
             char ch = s.charAt(i);
 
             if (ch == ' ') {
                 sb.append(' ');
             } else {
                 int p = (int) (ch - 'a');
+
                 char chnew = (char) ('a' + (p * key) % 26);
+
                 sb.append(chnew);
             }
         }
@@ -52,12 +71,13 @@ public class Main {
 
         // Loop through all 25 possible cipher shifts
         for (int K_inv = 1; K_inv < 26; K_inv++) {
+
             if ((K * K_inv) % 26 == 1) {
                 return K_inv;
             }
         }
 
-        return -1; // K is invalid
+        return -1; // K is invalid (e.g., even or 13)
     }
 
     public static void decryption() {
@@ -74,21 +94,24 @@ public class Main {
             str = sc.nextLine();
         }
 
-        System.out.println("Enter the key:\n");
+        System.out.print("Enter the key:\n");
         int key = sc.nextInt();
 
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < str.length(); i++) {
+
             char ch = str.charAt(i);
 
             if (ch == ' ') {
                 sb.append(' ');
             } else {
                 int c = (int) (ch - 'A');
+
                 int kinv = findinv(key);
 
                 char chnew = (char) ('a' + (c * kinv) % 26);
+
                 sb.append(chnew);
             }
         }
@@ -104,15 +127,18 @@ public class Main {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < str.length(); i++) {
+
             char ch = str.charAt(i);
 
             if (ch == ' ') {
                 sb.append(' ');
             } else {
                 int c = (int) (ch - 'A');
+
                 int kinv = findinv(key);
 
                 char chnew = (char) ('a' + (c * kinv) % 26);
+
                 sb.append(chnew);
             }
         }
@@ -168,15 +194,19 @@ public class Main {
             opt = sc.nextInt();
 
             if (opt == 1) {
+
                 encryption();
 
             } else if (opt == 2) {
+
                 decryption();
 
             } else if (opt == 3) {
+
                 bruteforce();
 
             } else if (opt > 4) {
+
                 System.out.println("Invalid choice enter again : ");
             }
 
