@@ -1,7 +1,11 @@
+//.additive cipher
 import java.util.*;
 public class cyber{
     public static boolean isvalid(String s){
         return s.matches("[a-z ]+");
+    }
+    public static boolean isnumvalid(String text){
+     return text.matches("\\d+"); // Returns true
     }
     public static void encryption(){
         //take the plain text;[should not contain the A-Z0-9*/76];
@@ -13,7 +17,12 @@ public class cyber{
             s=sc.nextLine();
         }
         System.out.print("Enter the key \n");
-        int key=sc.nextInt();
+        String k=sc.next();
+        while(!isnumvalid(k)){
+            System.out.print("Enter the key again\n");
+            k=sc.next();
+        }
+        int key=Integer.valueOf(k);
         StringBuilder sb=new StringBuilder();
         for(int i=0;i<s.length();i++){
             char ch=s.charAt(i);
@@ -41,8 +50,13 @@ public class cyber{
             System.out.println("Invalid re enter: \n");
             str=sc.nextLine();
         }
-        System.out.println("Enter the key: \n");
-        int key=sc.nextInt();
+        System.out.print("Enter the key \n");
+        String k=sc.next();
+        while(!isnumvalid(k)){
+            System.out.print("Enter the key again\n");
+            k=sc.next();
+        }
+        int key=Integer.valueOf(k);
         StringBuilder sb=new StringBuilder();
         for(int i=0;i<str.length();i++){
             char ch=str.charAt(i);
