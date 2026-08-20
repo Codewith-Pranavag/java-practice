@@ -105,10 +105,24 @@ public class cyber{
         Scanner sc=new Scanner(System.in);
         // System.out.print("Enter the options: \n 1. Encryption \n 2. Decryption \n 3. Bruteforce \n 4. Exit \n");
         //checking if the input if valid or not;
-        int opt=-1;
-        do{
-           System.out.print(" 1. Encryption \n 2. Decryption \n 3. Bruteforce \n 4. Exit \n Enter the options: \n ");
-           opt=sc.nextInt();
+        int opt = -1;
+        String o;
+
+        do {
+
+            System.out.print(
+                "1. Encryption \n"
+                + "2. Decryption \n"
+                + "3. Bruteforce \n"
+                + "4. Exit \n"
+                + "Enter the options: \n"
+            );
+            o=sc.next();
+            while(!isnumvalid(o)){
+              System.out.print("renter the options \n");
+              o=sc.next();
+            }
+            opt=Integer.valueOf(o);
             if(opt==1){
                 encryption();
             }
