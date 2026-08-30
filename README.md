@@ -13,7 +13,7 @@ I enjoy turning ideas into real-world products while continuously improving my s
 
 ## 🚀 About Me
 
-* 💻 Full-Stack Web Developer
+* 💻 Aspiring Ethical Hacker
 * 🚀 Founder of BhuOne Labs
 * 🔐 Cybersecurity & Security Research Enthusiast
 * 🧠 Problem Solving & Data Structures
