@@ -1,9 +1,10 @@
 import java.util.Scanner;
 
-public class EulerTotient {
+public class PrimitiveRoot {
 
     // Check whether a number is prime
     static boolean isPrime(int n) {
+
         if (n < 2)
             return false;
 
@@ -11,256 +12,137 @@ public class EulerTotient {
             if (n % i == 0)
                 return false;
         }
+
         return true;
     }
 
-    // Calculate GCD
-    static int gcd(int a, int b) {
-        while (b != 0) {
-            int temp = b;
-            b = a % b;
-            a = temp;
-        }
-        return a;
-    }
+    // Calculate a^b mod m
+    static int modPower(int a, int b, int m) {
 
-    // Calculate p^k
-    static int power(int p, int k) {
         int result = 1;
 
-        for (int i = 0; i < k; i++) {
-            result *= p;
+        for (int i = 1; i <= b; i++) {
+            result = (result * a) % m;
         }
 
         return result;
     }
 
-    // Euler Totient Function
-    static int phi(int n) {
+    // Check whether g is a primitive root modulo p
+    static boolean isPrimitiveRoot(int g, int p) {
 
-        if (n == 1)
-            return 1;
+        boolean[] found = new boolean[p];
 
-        if (isPrime(n))
-            return n - 1;
+        // Calculate g^1, g^2, ..., g^(p-1)
+        for (int i = 1; i <= p - 1; i++) {
 
-        // Rule 3: n = p^k
-        for (int p = 2; p * p <= n; p++) {
+            int value = modPower(g, i, p);
 
-            if (isPrime(p) && n % p == 0) {
+            // If the same value appears again,
+            // g is not a primitive root
+            if (found[value]) {
+                return false;
+            }
 
-                int temp = n;
-                int k = 0;
+            found[value] = true;
+        }
 
-                while (temp % p == 0) {
-                    temp /= p;
-                    k++;
-                }
+        // Check whether all values 1 to p-1 occurred
+        for (int i = 1; i < p; i++) {
 
-                if (temp == 1) {
-                    return power(p, k) - power(p, k - 1);
-                }
+            if (!found[i]) {
+                return false;
             }
         }
 
-        // Rule 4: n = p*q
-        for (int p = 2; p < n; p++) {
-
-            if (isPrime(p) && n % p == 0) {
-
-                int q = n / p;
-
-                if (isPrime(q) && p != q) {
-                    return (p - 1) * (q - 1);
-                }
-            }
-        }
-
-        // General case
-        int result = n;
-
-        for (int p = 2; p <= n; p++) {
-
-            if (isPrime(p) && n % p == 0) {
-                result = result - result / p;
-            }
-        }
-
-        return result;
+        return true;
     }
 
-    // Display the table
-    static void displayTable(int n) {
+    // Find all primitive roots
+    static void findPrimitiveRoots(int p) {
 
-        System.out.println("\n---------- GCD TABLE ----------");
+        if (!isPrime(p)) {
 
-        // Horizontal row: numbers
-        System.out.print("Numbers : ");
+            System.out.println("\n" + p + " is not prime.");
+            System.out.println(
+                "This program finds primitive roots for prime numbers."
+            );
 
-        for (int i = 1; i <= n; i++) {
-            System.out.printf("%4d", i);
+            return;
         }
 
-        System.out.println();
+        System.out.println("\n---------- PRIMITIVE ROOT CALCULATION ----------");
 
-        // Vertical row: gcd values
-        System.out.print("gcd(" + n + ",i):");
+        System.out.println("p = " + p);
+        System.out.println("Since p is prime:");
+        System.out.println("φ(p) = p - 1");
+        System.out.println("φ(" + p + ") = " + (p - 1));
 
-        int count = 0;
+        System.out.println("\nPrimitive root condition:");
+        System.out.println(
+            "g is a primitive root if g^1, g^2, ..., g^(p-1)"
+        );
+        System.out.println(
+            "generate all numbers from 1 to " + (p - 1) + " modulo " + p
+        );
 
-        for (int i = 1; i <= n; i++) {
+        System.out.println("\n---------- CHECKING VALUES ----------");
 
-            int g = gcd(n, i);
+        System.out.print("Primitive roots: ");
 
-            System.out.printf("%4d", g);
+        boolean foundRoot = false;
 
-            if (g == 1)
-                count++;
-        }
+        for (int g = 2; g < p; g++) {
 
-        System.out.println();
+            if (isPrimitiveRoot(g, p)) {
 
-        // Display relatively prime numbers
-        System.out.print("\nNumbers relatively prime to " + n + ": ");
-
-        for (int i = 1; i <= n; i++) {
-            if (gcd(n, i) == 1) {
-                System.out.print(i + " ");
+                foundRoot = true;
+                System.out.print(g + " ");
             }
         }
 
+        if (!foundRoot) {
+            System.out.println("None");
+            return;
+        }
+
         System.out.println();
 
-        System.out.println("Count = " + count);
-        System.out.println("Therefore φ(" + n + ") = " + count);
+        // Show detailed calculation for every primitive root
+        System.out.println(
+            "\n---------- CALCULATION STEPS ----------"
+        );
+
+        for (int g = 2; g < p; g++) {
+
+            if (isPrimitiveRoot(g, p)) {
+
+                System.out.println(
+                    "\ng = " + g + " is a primitive root modulo " + p
+                );
+
+                System.out.println("Powers:");
+
+                for (int i = 1; i <= p - 1; i++) {
+
+                    int value = modPower(g, i, p);
+
+                    System.out.println(
+                        g + "^" + i + " mod " + p + " = " + value
+                    );
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter n: ");
-        int n = sc.nextInt();
+        System.out.print("Enter prime number p: ");
+        int p = sc.nextInt();
 
-        if (n < 1) {
-            System.out.println("Please enter a positive integer.");
-            sc.close();
-            return;
-        }
-
-        // Display GCD table
-        displayTable(n);
-
-        // Show formula-based calculation
-        System.out.println("\n---------- CALCULATION STEPS ----------");
-
-        if (n == 1) {
-
-            System.out.println("Rule 1:");
-            System.out.println("φ(1) = 1");
-
-        } else if (isPrime(n)) {
-
-            System.out.println("Rule 2: n is prime");
-            System.out.println("φ(n) = n - 1");
-            System.out.println("φ(" + n + ") = " + n + " - 1 = " + phi(n));
-
-        } else {
-
-            boolean primePower = false;
-
-            for (int p = 2; p * p <= n; p++) {
-
-                if (isPrime(p) && n % p == 0) {
-
-                    int temp = n;
-                    int k = 0;
-
-                    while (temp % p == 0) {
-                        temp /= p;
-                        k++;
-                    }
-
-                    if (temp == 1) {
-
-                        primePower = true;
-
-                        System.out.println("Rule 3: n = p^k");
-
-                        System.out.println(n + " = " + p + "^" + k);
-
-                        System.out.println(
-                            "φ(p^k) = p^k - p^(k-1)"
-                        );
-
-                        System.out.println(
-                            "φ(" + n + ") = " +
-                            power(p, k) + " - " +
-                            power(p, k - 1)
-                        );
-
-                        System.out.println(
-                            "φ(" + n + ") = " + phi(n)
-                        );
-
-                        break;
-                    }
-                }
-            }
-
-            if (!primePower) {
-
-                boolean productOfTwoPrimes = false;
-
-                for (int p = 2; p < n; p++) {
-
-                    if (isPrime(p) && n % p == 0) {
-
-                        int q = n / p;
-
-                        if (isPrime(q) && p != q) {
-
-                            productOfTwoPrimes = true;
-
-                            System.out.println(
-                                "Rule 4: n = p × q, where p and q are prime"
-                            );
-
-                            System.out.println(
-                                n + " = " + p + " × " + q
-                            );
-
-                            System.out.println(
-                                "φ(n) = φ(p) × φ(q)"
-                            );
-
-                            System.out.println(
-                                "φ(" + n + ") = (" +
-                                p + " - 1) × (" +
-                                q + " - 1)"
-                            );
-
-                            System.out.println(
-                                "φ(" + n + ") = " + phi(n)
-                            );
-
-                            break;
-                        }
-                    }
-                }
-
-                if (!productOfTwoPrimes) {
-
-                    System.out.println(
-                        "General Euler Totient calculation"
-                    );
-
-                    System.out.println(
-                        "φ(" + n + ") = " + phi(n)
-                    );
-                }
-            }
-        }
+        findPrimitiveRoots(p);
 
         sc.close();
     }
