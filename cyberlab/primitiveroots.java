@@ -8,7 +8,7 @@ public class PrimitiveRoot {
         if (n < 2)
             return false;
 
-        for (int i = 2; i * i <= n; i++) {
+        for (int i = 2; i <= n / i; i++) {
             if (n % i == 0)
                 return false;
         }
@@ -22,7 +22,7 @@ public class PrimitiveRoot {
         int result = 1;
 
         for (int i = 1; i <= b; i++) {
-            result = (result * a) % m;
+            result = (int) ((long) result * a % m);
         }
 
         return result;
@@ -61,17 +61,9 @@ public class PrimitiveRoot {
     // Find all primitive roots
     static void findPrimitiveRoots(int p) {
 
-        if (!isPrime(p)) {
-
-            System.out.println("\n" + p + " is not prime.");
-            System.out.println(
-                "This program finds primitive roots for prime numbers."
-            );
-
-            return;
-        }
-
-        System.out.println("\n---------- PRIMITIVE ROOT CALCULATION ----------");
+        System.out.println(
+            "\n---------- PRIMITIVE ROOT CALCULATION ----------"
+        );
 
         System.out.println("p = " + p);
         System.out.println("Since p is prime:");
@@ -83,7 +75,8 @@ public class PrimitiveRoot {
             "g is a primitive root if g^1, g^2, ..., g^(p-1)"
         );
         System.out.println(
-            "generate all numbers from 1 to " + (p - 1) + " modulo " + p
+            "generate all numbers from 1 to " + (p - 1)
+            + " modulo " + p
         );
 
         System.out.println("\n---------- CHECKING VALUES ----------");
@@ -95,7 +88,6 @@ public class PrimitiveRoot {
         for (int g = 2; g < p; g++) {
 
             if (isPrimitiveRoot(g, p)) {
-
                 foundRoot = true;
                 System.out.print(g + " ");
             }
@@ -139,10 +131,50 @@ public class PrimitiveRoot {
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter prime number p: ");
-        int p = sc.nextInt();
+        while (true) {
 
-        findPrimitiveRoots(p);
+            System.out.print(
+                "\nEnter prime number p (0 to exit): "
+            );
+
+            // Handle non-integer input
+            if (!sc.hasNextInt()) {
+                System.out.println(
+                    "Invalid input! Please enter an integer."
+                );
+                sc.next();
+                continue;
+            }
+
+            int p = sc.nextInt();
+
+            // Exit only when user enters 0
+            if (p == 0) {
+                System.out.println(
+                    "Program terminated. Goodbye!"
+                );
+                break;
+            }
+
+            // Reject negative numbers and 1
+            if (p < 2) {
+                System.out.println(
+                    "Invalid number! Enter a prime number greater than 1."
+                );
+                continue;
+            }
+
+            // Reject non-prime numbers
+            if (!isPrime(p)) {
+                System.out.println(
+                    p + " is not prime. Please enter a prime number again."
+                );
+                continue;
+            }
+
+            // Calculate primitive roots for valid prime numbers
+            findPrimitiveRoots(p);
+        }
 
         sc.close();
     }
